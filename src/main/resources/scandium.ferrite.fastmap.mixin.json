@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "dev.scandium.ferrite.mixin.fastmap",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "FastMapStateHolderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "plugin": "dev.scandium.ferrite.mixin.fastmap.Config",
+  "refmap": "scandium-refmap.json"
+}

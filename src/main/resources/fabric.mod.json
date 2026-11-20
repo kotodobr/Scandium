@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "scandium",
+  "version": "${version}",
+  "name": "Scandium",
+  "description": "Garbage-collector scheduling, memory-leak fixes and memory-usage optimizations for Minecraft.",
+  "authors": ["Scandium contributors"],
+  "contributors": ["malte0811 (FerriteCore, MIT - bundled memory optimizations)"],
+  "license": "MIT",
+  "icon": "assets/scandium/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.scandium.Scandium"],
+    "client": ["dev.scandium.client.ScandiumClient"]
+  },
+  "mixins": [
+    "scandium.mixins.json",
+    "scandium.ferrite.blockstatecache.mixin.json",
+    "scandium.ferrite.dedupmultipart.mixin.json",
+    "scandium.ferrite.fastmap.mixin.json",
+    "scandium.ferrite.mrl.mixin.json",
+    "scandium.ferrite.predicates.mixin.json",
+    "scandium.ferrite.dedupbakedquad.mixin.json",
+    "scandium.ferrite.threaddetec.mixin.json",
+    "scandium.ferrite.modelsides.mixin.json",
+    "scandium.ferrite.fabric.mixin.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "~1.20.4",
+    "java": ">=17"
+  },
+  "breaks": {
+    "ferritecore": "*",
+    "hydrogen": "<=0.3"
+  },
+  "custom": {
+    "lithium:options": {
+      "mixin.alloc.blockstate": false
+    }
+  }
+}

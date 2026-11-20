@@ -1,0 +1,48 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.scandium.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "dev.scandium.mixin.ScandiumMixinPlugin",
+  "refmap": "scandium-refmap.json",
+  "mixins": [
+    "command.CommandsMixin",
+    "gc.MinecraftServerGcMixin",
+    "leak.biome.BiomeTemperatureMixin",
+    "physics.EntityInsideBlocksMixin",
+    "physics.MobAiThrottleMixin"
+  ],
+  "client": [
+    "client.ClientCommandMixin",
+    "client.DebugScreenOverlayMixin",
+    "client.FrameTimeMixin",
+    "gc.client.MinecraftGcMixin",
+    "leak.client.MinecraftStaleReferencesMixin",
+    "leak.screenshot.MinecraftHugeScreenshotMixin",
+    "leak.texture.TextureUtilReadMixin",
+    "render.BlockEntityCullingMixin",
+    "render.CompiledSectionAccessor",
+    "render.LevelRendererCullingMixin",
+    "render.ParticleCullingMixin",
+    "render.RenderSectionRegionMixin",
+    "render.SectionRebuildBudgetMixin",
+    "render.ShaderSamplerCacheMixin",
+    "render.SectionRenderDispatcherMixin",
+    "render.VertexBufferRegionMixin",
+    "vulkan.GameRendererAccessor",
+    "vulkan.VulkanReloadMixin",
+    "vulkan.present.RenderSystemPresentMixin",
+    "vulkan.present.RenderTargetPresentMixin",
+    "vulkan.present.WindowPresentMixin",
+    "vulkan.shadow.GlStateManagerMixin",
+    "vulkan.shadow.LevelRendererTerrainShadowMixin",
+    "vulkan.shadow.RenderSectionTerrainMixin",
+    "vulkan.shadow.ShaderInstanceAccessor",
+    "vulkan.shadow.ShaderInstanceGlOffMixin",
+    "vulkan.shadow.ShaderInstanceStaticAccessor",
+    "vulkan.shadow.VertexBufferShadowMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

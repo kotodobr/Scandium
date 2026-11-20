@@ -1,0 +1,93 @@
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+}
+
+// --- FerriteCore-derived ImmutableMap replacement (see THIRD_PARTY_NOTICES.md) ---
+// googleaccess: tiny classes in com.google.common.collect that are defined at runtime in Guava's classloader.
+//               They are shipped as resources (not classes) so no loader picks them up by accident.
+// googleimpl:   the actual fast ImmutableMap, loaded by Knot after googleaccess has been defined.
+sourceSets {
+    googleaccess {
+        java
+    }
+    googleimpl {
+        java {
+            compileClasspath += googleaccess.output + main.compileClasspath + main.output
+        }
+    }
+    main {
+        runtimeClasspath += googleimpl.output
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // Official Mojang mappings: names match the vanilla code and crash reports.
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    googleaccessCompileOnly "com.google.guava:guava:32.1.2-jre"
+
+    // Experimental Vulkan backend. Same LWJGL version as Minecraft 1.20.4 (3.3.2); bundled jar-in-jar.
+    // Vulkan itself comes from the system driver (vulkan-1.dll / libvulkan.so.1); on macOS MoltenVK is bundled.
+    // shaderc compiles GLSL to SPIR-V at runtime (Minecraft's shaders come from resource packs).
+    def lwjgl = '3.3.2'
+    include(implementation("org.lwjgl:lwjgl-vulkan:${lwjgl}"))
+    include(implementation("org.lwjgl:lwjgl-shaderc:${lwjgl}"))
+    ['natives-windows', 'natives-linux', 'natives-macos', 'natives-macos-arm64'].each { natives ->
+        include(runtimeOnly("org.lwjgl:lwjgl-shaderc:${lwjgl}:${natives}"))
+    }
+    ['natives-macos', 'natives-macos-arm64'].each { natives ->
+        include(runtimeOnly("org.lwjgl:lwjgl-vulkan:${lwjgl}:${natives}"))
+    }
+}
+
+loom {
+    runs {
+        client { runDir 'run' }
+        server { runDir 'run-server' }
+    }
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
+    }
+    into('googleaccess') {
+        from sourceSets.googleaccess.output
+        rename { String name -> name + '_manual' }
+    }
+}
+
+jar {
+    from sourceSets.googleimpl.output
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 17
+    it.options.encoding = 'UTF-8'
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+    from('THIRD_PARTY_NOTICES.md')
+    from('LICENSE') {
+        rename { "${it}_${project.base.archivesName.get()}" }
+    }
+}

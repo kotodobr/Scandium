@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "dev.scandium.ferrite.mixin.modelsides",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "SimpleBakedModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "plugin": "dev.scandium.ferrite.mixin.modelsides.Config",
+  "refmap": "scandium-refmap.json"
+}

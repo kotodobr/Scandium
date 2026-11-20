@@ -1,0 +1,51 @@
+package dev.scandium.ferrite.fastmap.immutable;
+
+import com.google.common.collect.ScandiumFerriteImmutableMapAccess;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
+import dev.scandium.ferrite.ducks.FastMapStateHolder;
+import net.minecraft.world.level.block.state.properties.Property;
+import org.jetbrains.annotations.Nullable;
+
+public class FastMapEntryImmutableMap extends ScandiumFerriteImmutableMapAccess<Property<?>, Comparable<?>> {
+    private final FastMapStateHolder<?> viewedState;
+
+    public FastMapEntryImmutableMap(FastMapStateHolder<?> viewedState) {
+        this.viewedState = viewedState;
+    }
+
+    @Override
+    public int size() {
+        return viewedState.getStateMap().numProperties();
+    }
+
+    @Override
+    public Comparable<?> get(@Nullable Object key) {
+        return viewedState.getStateMap().getValue(viewedState.getStateIndex(), key);
+    }
+
+    @Override
+    public ImmutableSet<Entry<Property<?>, Comparable<?>>> createEntrySet() {
+        return new FastMapEntryEntrySet(viewedState);
+    }
+
+    @Override
+    public ImmutableSet<Entry<Property<?>, Comparable<?>>> entrySet() {
+        return new FastMapEntryEntrySet(viewedState);
+    }
+
+    @Override
+    public boolean isPartialView() {
+        return false;
+    }
+
+    @Override
+    public ImmutableSet<Property<?>> createKeySet() {
+        return viewedState.getStateMap().getPropertySet();
+    }
+
+    @Override
+    public ImmutableCollection<Comparable<?>> createValues() {
+        return new FastMapValueSet(viewedState);
+    }
+}

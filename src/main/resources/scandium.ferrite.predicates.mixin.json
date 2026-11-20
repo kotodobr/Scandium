@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "dev.scandium.ferrite.mixin.predicates",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "AndConditionMixin",
+    "KeyValueConditionMixin",
+    "OrConditionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "plugin": "dev.scandium.ferrite.mixin.predicates.Config",
+  "refmap": "scandium-refmap.json"
+}
